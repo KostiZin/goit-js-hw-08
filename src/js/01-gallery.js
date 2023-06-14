@@ -18,6 +18,10 @@ const markup = galleryItems.map(
 </li>`
 );
 
+// Delete bullets
+
+ulEl.style.listStyle = 'none';
+
 // Add a new markup to HTML
 
 ulEl.insertAdjacentHTML(`beforeend`, markup.join(``));
