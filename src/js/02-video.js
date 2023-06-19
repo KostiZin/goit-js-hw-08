@@ -11,19 +11,15 @@ let currentTime = {
   seconds: 0,
 };
 
-const { duration, percent, seconds } = currentTime;
+player.on('play', handlePlay);
 
-player.on('play', function () {
-  //   preventDefault();
-  console.log('played the video!');
-
-  player.on('timeupdate', function (evt) {
+function handlePlay() {
+  player.on('timeupdate', throttle(handleTime, 1000));
+  function handleTime(evt) {
     console.log(evt);
     localStorage.setItem(KEY, JSON.stringify(evt));
-  });
-});
-
-// console.log(currentTime);
+  }
+}
 
 getCurrentTime();
 
@@ -32,25 +28,5 @@ function getCurrentTime() {
   currentTime = time;
   return currentTime;
 }
-console.log(getCurrentTime());
 
-player
-  .setCurrentTime(currentTime.seconds)
-  .then(function (seconds) {
-    // seconds = the actual time that the player seeked to
-  })
-  .catch(function (error) {
-    switch (error.name) {
-      case 'RangeError':
-        // the time was less than 0 or greater than the video’s duration
-        break;
-
-      default:
-        // some other error occurred
-        break;
-    }
-  });
-
-player.getVideoTitle().then(function (title) {
-  console.log('title:', title);
-});
+player.setCurrentTime(currentTime.seconds);
